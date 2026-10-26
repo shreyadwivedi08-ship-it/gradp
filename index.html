@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIP Feedback AI Assistant</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; background: #f9fafb; color: #111; }
+        h2 { color: #4F46E5; }
+        textarea { width: 100%; height: 90px; padding: 12px; font-size: 14px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
+        button { background: #4F46E5; color: white; border: none; padding: 12px 24px; font-size: 15px; cursor: pointer; border-radius: 6px; font-weight: bold; }
+        button:hover { background: #4338ca; }
+        #response { margin-top: 20px; padding: 16px; background: white; border: 1px solid #e5e7eb; border-radius: 6px; white-space: pre-wrap; line-height: 1.5; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <h2>Groww SIP Feedback AI Assistant</h2>
+    <p>Type any question about user feedback, drop-offs, or insights:</p>
+    
+    <textarea id="questionInput" placeholder="e.g., Why do people stop their SIPs due to market drops?"></textarea>
+    <br>
+    <button onclick="askAI()">Ask Question</button>
+
+    <div id="response">Your answer will appear here...</div>
+
+    <script>
+        async function askAI() {
+            const question = document.getElementById('questionInput').value;
+            const responseDiv = document.getElementById('response');
+            if (!question) return;
+
+            responseDiv.innerText = "Analyzing Google Sheet feedback data...";
+
+            try {
+                // Your Make Webhook URL
+                const webhookUrl = 'https://hook.eu1.make.com/ys1d4sh6n2u541dhzuk7elspgq3obvo8';
+                
+                const res = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: question })
+                });
+
+                const data = await res.text();
+                responseDiv.innerText = data;
+            } catch (error) {
+                responseDiv.innerText = "Error: Make sure your Make scenario is active and running!";
+            }
+        }
+    </script>
+</body>
+</html>
